@@ -200,14 +200,24 @@ const CCATS = [
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 async function analyzeCity(payload) {
-  const r = await fetch(`${API_BASE_URL}/api/analyze`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.detail || "Analysis failed.");
-  return d;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 120000); // 120s for Render free tier
+  try {
+    const r = await fetch(`${API_BASE_URL}/api/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.detail || "Analysis failed.");
+    return d;
+  } catch (e) {
+    clearTimeout(timeout);
+    if (e.name === "AbortError") throw new Error("Request timed out. The server may be waking up — please try again.");
+    throw e;
+  }
 }
 
 
