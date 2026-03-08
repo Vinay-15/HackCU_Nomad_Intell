@@ -263,5 +263,5 @@ MIT — do whatever you want with it.
 ---
 
 <p align="center">
-  Built with ☕ and too little sleep · <strong>Nomad Intelligence 2025</strong>
+  Built with ☕ and too little sleep · <strong>Nomad Intelligence </strong>
 </p>
