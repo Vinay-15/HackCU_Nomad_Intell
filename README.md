@@ -1,5 +1,5 @@
 
-# Nomad Intelligence — Gemini Fullstack
+# Nomad Intelligence
 
 This version uses:
 - React + Vite for the frontend
